@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .section {
+            margin: 40px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .code-block {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Лабораторна робота №2</h1>
+
+    <!-- HTML Section -->
+    <div class="section">
+        <h2>HTML</h2>
+        <div class="code-block">
+            <pre><code>&lt;!DOCTYPE html&gt;
+                &lt;html lang=&quot;uk&quot;&gt;
+                &lt;head&gt;
+                    &lt;meta charset=&quot;UTF-8&quot;&gt;
+                    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+                    &lt;title&gt;Горизонтальне меню&lt;/title&gt;
+                    &lt;link rel=&quot;stylesheet&quot; href=&quot;style_2.css&quot;&gt;
+                &lt;/head&gt;
+                &lt;body&gt;
+                    &lt;div class=&quot;menu&quot;&gt;
+                        &lt;div class=&quot;menu-item&quot; onmouseover=&quot;showSubMenu(this)&quot; onmouseout=&quot;hideSubMenu(this)&quot;&gt;
+                            &lt;div class=&quot;menu-link&quot;&gt;Головна&lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;menu-item&quot; onmouseover=&quot;showSubMenu(this)&quot; onmouseout=&quot;hideSubMenu(this)&quot;&gt;
+                            &lt;div class=&quot;menu-link&quot;&gt;Про нас&lt;/div&gt;
+                            &lt;div class=&quot;sub-menu&quot;&gt;
+                                &lt;div class=&quot;sub-menu-item&quot;&gt;&lt;a href=&quot;#&quot;&gt;Група&lt;/a&gt;&lt;/div&gt;
+                                &lt;div class=&quot;sub-menu-item&quot;&gt;&lt;a href=&quot;#&quot;&gt;Університет&lt;/a&gt;&lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;menu-item&quot; onmouseover=&quot;showSubMenu(this)&quot; onmouseout=&quot;hideSubMenu(this)&quot;&gt;
+                            &lt;div class=&quot;menu-link&quot;&gt;Сфера&lt;/div&gt;
+                            &lt;div class=&quot;sub-menu&quot;&gt;
+                                &lt;div class=&quot;sub-menu-item&quot;&gt;&lt;a href=&quot;#&quot;&gt;Робота&lt;/a&gt;&lt;/div&gt;
+                                &lt;div class=&quot;sub-menu-item&quot;&gt;&lt;a href=&quot;#&quot;&gt;UML&lt;/a&gt;&lt;/div&gt;
+                                &lt;div class=&quot;sub-menu-item&quot;&gt;&lt;a href=&quot;#&quot;&gt;Дизайн&lt;/a&gt;&lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;menu-item&quot; onmouseover=&quot;showSubMenu(this)&quot; onmouseout=&quot;hideSubMenu(this)&quot;&gt;
+                            &lt;div class=&quot;menu-link&quot;&gt;Контакти&lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;img src=&quot;/image/сircle.png&quot; id=&quot;movingImage&quot; alt=&quot;Image&quot;&gt;
+                    &lt;script src=&quot;/src/spript_2.js&quot;&gt;&lt;/script&gt;
+                &lt;/body&gt;
+                &lt;/html&gt;
+            </code></pre>
+        </div>
+    </div>                    
+                
+
+                    <div class="section">
+                        <h2>CSS</h2>
+                        <div class="code-block">
+                            <pre><code>.menu {
+                    display: flex;
+                    justify-content: space-around;
+                    background-color: #333;
+                    padding: 10px;
+                }
+                
+                .menu-item {
+                    position: relative;
+                }
+                
+                .menu-link {
+                    color: #fff;
+                    text-decoration: none;
+                    padding: 10px 20px;
+                    background-color: #333;
+                    display: block;
+                }
+                
+                .sub-menu {
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background-color: #444;
+                }
+                
+                .sub-menu-item {
+                    padding: 10px 20px;
+                }
+                
+                .menu-item:hover .sub-menu {
+                    display: block;
+                }
+                            </code></pre>
+        </div>
+    </div>
+
+    <div class="section"></div>
+        <h2>CSS</h2>
+        <div class="code-block">
+            <pre><code>body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #9b9b9b;
+            }
+            
+            .menu {
+                display: flex;
+                background-color: #666666;
+            }
+            
+            .menu-item {
+                position: relative;
+            }
+            
+            .menu-link {
+                display: block;
+                padding: 14px 16px;
+                color: white;
+                text-decoration: none;
+                background-color: #666666;
+                cursor: pointer;
+            }
+            
+            .menu-link:hover {
+                background-color: #666666;
+            }
+            
+            .sub-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: #666666;
+                padding: 0;
+                display: none;
+                transition: opacity 0.3s;
+            }
+            
+            .menu-item:hover .submenu {
+                display: block;
+            }
+            
+            .sub-menu-item {
+                padding: 10px 16px;
+            }
+            
+            .sub-menu-item a {
+                color: white;
+                text-decoration: none;
+            }
+            
+            .sub-menu-item a:hover {
+                background-color: #666666;
+            }
+            #movingImage {
+                position: absolute;
+                top: 50%;
+                left: 100%;
+                transform: translateY(-50%);
+                width: 100px;
+                height: auto;
+            }
+            </code></pre>
+        </div>
+    </div>
+
+
+    <div class="section">
+        <h2>JavaScript</h2>
+        <div class="code-block">
+            <pre><code>function showSubMenu(element) {
+                const submenu = element.querySelector('.sub-menu');
+                if (submenu) {
+                    submenu.style.display = 'block';
+                    submenu.style.opacity = '1';
+                    submenu.style.transition = 'opacity 0.5s ease'; 
+                }
+            }
+            
+            function hideSubMenu(element) {
+                const submenu = element.querySelector('.sub-menu');
+                if (submenu) {
+                    submenu.style.display = 'none';
+                    submenu.style.opacity = '0';
+                    submenu.style.transition = 'opacity 0.5s ease'; 
+                }
+            }
+            let image = document.getElementById('movingImage');
+            let position = window.innerWidth;
+            
+            function moveImage() {
+                if (position <= -image.width) {
+                    position = window.innerWidth; 
+                } else {
+                    position -= 2; 
+                }
+                image.style.left = position + 'px';
+                requestAnimationFrame(moveImage); 
+            }
+            
+            moveImage(); 
+            </code></pre>
+        </div>
+    </div>
+
+</body>
+</html>

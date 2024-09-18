@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторні роботи</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/src/script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <div class="navigation">
+            <h2>Вікно навігації по сайту</h2>
+            <ul>
+                <li><a href="#" onclick="loadLabContent(1)">Лабораторна робота 1</a></li>
+                <li><a href="#" onclick="loadLabContent(2)">Лабораторна робота 2</a></li>
+                <li><a href="#" onclick="loadLabContent(3)">Лабораторна робота 3</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <h2>Звіт</h2>
+            <p>про лабораторні роботи з курсу</p>
+            <p>«Сучасні технології Інтернет-програмування»</p>
+            <p>студента групи ІПЗ-22-1</p>
+            <p>Дорохін Денис Андріович</p>
+            <div class="separator"></div>
+            <div class="download-section">
+                <h3>Вікно для завантаження</h3>
+                <button class="button" onclick="toggleCondition()">Показати/сховати умову лабораторної роботи</button>
+                <p id="labCondition" style="display:none;">Умова лабораторної роботи</p>
+                <button class="button" id="labResultButton">Результати виконання роботи</button>
+                <button class="button" id="labCodeButton">Код файлів</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

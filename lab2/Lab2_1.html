@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Горизонтальне меню</title>
+    <link rel="stylesheet" href="style_2.css">
+</head>
+<body>
+    <div class="menu">
+        <div class="menu-item" onmouseover="showSubMenu(this)" onmouseout="hideSubMenu(this)">
+            <div class="menu-link">Головна</div>
+        </div>
+        <div class="menu-item" onmouseover="showSubMenu(this)" onmouseout="hideSubMenu(this)">
+            <div class="menu-link">Про нас</div>
+            <div class="sub-menu">
+                <div class="sub-menu-item"><a href="#">Група</a></div>
+                <div class="sub-menu-item"><a href="#">Університет</a></div>
+            </div>
+        </div>
+        <div class="menu-item" onmouseover="showSubMenu(this)" onmouseout="hideSubMenu(this)">
+            <div class="menu-link">Сфера</div>
+            <div class="sub-menu">
+                <div class="sub-menu-item"><a href="#">Робота</a></div>
+                <div class="sub-menu-item"><a href="#">UML</a></div>
+                <div class="sub-menu-item"><a href="#">Дизайн</a></div>
+            </div>
+        </div>
+        <div class="menu-item" onmouseover="showSubMenu(this)" onmouseout="hideSubMenu(this)">
+            <div class="menu-link">Контакти</div>
+        </div>
+    </div>
+    <img src="/image/сircle.png" id="movingImage" alt="Image">
+    <script src="/src/spript_2.js"></script>
+</body>
+</html>

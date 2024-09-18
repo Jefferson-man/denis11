@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №3</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .section {
+            margin: 40px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .code-block {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Лабораторна робота №3</h1>
+
+    <!-- HTML Section -->
+    <div class="section">
+        <h2>HTML</h2>
+        <div class="code-block">
+            <pre><code>&lt;!DOCTYPE html&gt;
+                &lt;html lang=&quot;uk&quot;&gt;
+                    &lt;head&gt;
+                        &lt;meta charset=&quot;UTF-8&quot;&gt;
+                        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+                        &lt;title&gt;Калькулятор з меню&lt;/title&gt;
+                        &lt;link rel=&quot;stylesheet&quot; href=&quot;style_2.css&quot;&gt;
+                        &lt;script src=&quot;https://code.jquery.com/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+                    &lt;/head&gt;
+                    &lt;body&gt;
+                        &lt;!-- Меню --&gt;
+                        &lt;div class=&quot;menu&quot;&gt;
+                            &lt;div class=&quot;menu-item&quot; onmouseover=&quot;showSubMenu(this)&quot; onmouseout=&quot;hideSubMenu(this)&quot;&gt;
+                                &lt;div class=&quot;menu-link&quot;&gt;Головна&lt;/div&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;menu-item&quot; onmouseover=&quot;showSubMenu(this)&quot; onmouseout=&quot;hideSubMenu(this)&quot;&gt;
+                                &lt;div class=&quot;menu-link&quot;&gt;Про нас&lt;/div&gt;
+                                &lt;div class=&quot;sub-menu&quot;&gt;
+                                    &lt;div class=&quot;sub-menu-item&quot;&gt;&lt;a href=&quot;#&quot;&gt;Група&lt;/a&gt;&lt;/div&gt;
+                                    &lt;div class=&quot;sub-menu-item&quot;&gt;&lt;a href=&quot;#&quot;&gt;Університет&lt;/a&gt;&lt;/div&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;menu-item&quot; onmouseover=&quot;showSubMenu(this)&quot; onmouseout=&quot;hideSubMenu(this)&quot;&gt;
+                                &lt;div class=&quot;menu-link&quot;&gt;Сфера&lt;/div&gt;
+                                &lt;div class=&quot;sub-menu&quot;&gt;
+                                    &lt;div class=&quot;sub-menu-item&quot;&gt;&lt;a href=&quot;#&quot;&gt;Робота&lt;/a&gt;&lt;/div&gt;
+                                    &lt;div class=&quot;sub-menu-item&quot;&gt;&lt;a href=&quot;#&quot;&gt;UML&lt;/a&gt;&lt;/div&gt;
+                                    &lt;div class=&quot;sub-menu-item&quot;&gt;&lt;a href=&quot;#&quot;&gt;Дизайн&lt;/a&gt;&lt;/div&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;menu-item&quot; onmouseover=&quot;showSubMenu(this)&quot; onmouseout=&quot;hideSubMenu(this)&quot;&gt;
+                                &lt;div class=&quot;menu-link&quot;&gt;Контакти&lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                
+                        &lt;!-- Калькулятор --&gt;
+                        &lt;div class=&quot;calculator&quot;&gt;
+                            &lt;input type=&quot;text&quot; id=&quot;display&quot; disabled&gt;
+                            &lt;br&gt;
+                            &lt;button class=&quot;btn&quot; onclick=&quot;appendNumber('1')&quot;&gt;1&lt;/button&gt;
+                            &lt;button class=&quot;btn&quot; onclick=&quot;appendNumber('2')&quot;&gt;2&lt;/button&gt;
+                            &lt;button class=&quot;btn&quot; onclick=&quot;appendNumber('3')&quot;&gt;3&lt;/button&gt;
+                            &lt;br&gt;
+                            &lt;button class=&quot;btn&quot; onclick=&quot;appendNumber('4')&quot;&gt;4&lt;/button&gt;
+                            &lt;button class=&quot;btn&quot; onclick=&quot;appendNumber('5')&quot;&gt;5&lt;/button&gt;
+                            &lt;button class=&quot;btn&quot; onclick=&quot;appendNumber('6')&quot;&gt;6&lt;/button&gt;
+                            &lt;br&gt;
+                            &lt;button class=&quot;btn&quot; onclick=&quot;appendNumber('7')&quot;&gt;7&lt;/button&gt;
+                            &lt;button class=&quot;btn&quot; onclick=&quot;appendNumber('8')&quot;&gt;8&lt;/button&gt;
+                            &lt;button class=&quot;btn&quot; onclick=&quot;appendNumber('9')&quot;&gt;9&lt;/button&gt;
+                            &lt;br&gt;
+                            &lt;button class=&quot;btn&quot; onclick=&quot;appendNumber('0')&quot;&gt;0&lt;/button&gt;
+                            &lt;button class=&quot;btn&quot; onclick=&quot;clearDisplay()&quot;&gt;C&lt;/button&gt;
+                            &lt;button class=&quot;btn&quot; onclick=&quot;calculate()&quot;&gt;=&lt;/button&gt;
+                            &lt;br&gt;
+                            &lt;button class=&quot;btn&quot; onclick=&quot;setOperation('+')&quot;&gt;+&lt;/button&gt;
+                            &lt;button class=&quot;btn&quot; onclick=&quot;setOperation('-')&quot;&gt;-&lt;/button&gt;
+                            &lt;button class=&quot;btn&quot; onclick=&quot;setOperation('*')&quot;&gt;*&lt;/button&gt;
+                            &lt;button class=&quot;btn&quot; onclick=&quot;setOperation('/')&quot;&gt;/&lt;/button&gt;
+                        &lt;/div&gt;
+                
+                        &lt;script src=&quot;/src/script_3.js&quot;&gt;&lt;/script&gt;
+                    &lt;/body&gt;
+                &lt;/html&gt;                
+            </code></pre>
+        </div>
+    </div>                    
+                
+    <div class="section"></div>
+        <h2>CSS</h2>
+        <div class="code-block">
+            <pre><code>body {
+                font-family: Arial, sans-serif;
+                margin: 50px;
+            }
+            .calculator {
+                width: 200px;
+            }
+            input[type="text"] {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 10px;
+                text-align: right;
+            }
+            .btn {
+                width: 45px;
+                height: 45px;
+                margin: 5px;
+                font-size: 18px;
+            }
+            </code></pre>
+        </div>
+    </div>
+
+
+    <div class="section">
+        <h2>JavaScript</h2>
+        <div class="code-block">
+            <pre><code>let displayValue = '';   // отображение виражений 
+                let firstNumber = null;  // первое число
+                let operator = null;     // оператор дейсвтий
+                
+                // добавлене чисел и операторы до дисплея 
+                function appendNumber(number) {
+                    displayValue += number;
+                    document.getElementById('display').value = displayValue;  
+                }
+                
+                //  (+, -, *, /)
+                function setOperation(op) {
+                    if (displayValue !== '' && operator === null) {
+                        firstNumber = parseFloat(displayValue); // сохранение первого числа
+                        operator = op;                          // сохран операторов
+                        displayValue += ' ' + op + ' ';         // добавляю оператор до дисплея з проблеми для читаемости
+                        document.getElementById('display').value = displayValue;  // обновление поля ввода
+                    }
+                }
+                
+                // обчисление результата
+                function calculate() {
+                    const [first, op, second] = displayValue.split(' ');  //разделение выраж на части
+                    if (first !== '' && op !== '' && second !== '') {
+                        let result;
+                        const firstNumber = parseFloat(first);
+                        const secondNumber = parseFloat(second);
+                
+                        switch (op) {
+                            case '+':
+                                result = firstNumber + secondNumber;
+                                break;
+                            case '-':
+                                result = firstNumber - secondNumber;
+                                break;
+                            case '*':
+                                result = firstNumber * secondNumber;
+                                break;
+                            case '/':
+                                result = firstNumber / secondNumber;
+                                break;
+                            default:
+                                return;
+                        }
+                        document.getElementById('display').value = result;  // результат
+                        displayValue = result.toString();  // обновление 
+                        operator = null;  
+                    }
+                }
+                
+                // очистка
+                function clearDisplay() {
+                    displayValue = '';
+                    firstNumber = null;
+                    operator = null;
+                    document.getElementById('display').value = '';
+                }
+                 
+            </code></pre>
+        </div>
+    </div>
+
+</body>
+</html>
