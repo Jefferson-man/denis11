@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №4</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .section {
+            margin: 40px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .code-block {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Лабораторна робота №4</h1>
+    <div class="section">
+        <h2>HTML</h2>
+        <div class="code-block">
+            <pre><code>&lt;!DOCTYPE html&gt;
+                &lt;html lang=&quot;uk&quot;&gt;
+                &lt;head&gt;
+                    &lt;meta charset=&quot;UTF-8&quot;&gt;
+                    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+                    &lt;title&gt;Форма реєстрації&lt;/title&gt;
+                    &lt;link rel=&quot;stylesheet&quot; href=&quot;style_4.css&quot;&gt;
+                &lt;/head&gt;     
+                &lt;body&gt;
+                    &lt;img id=&quot;photo&quot; src=&quot;/image/image6.jpg&quot; alt=&quot;Ваше фото&quot; /&gt;
+                    &lt;div id=&quot;caption&quot;&gt;Дорохін Денис Андрійович&lt;/div&gt;
+                    &lt;script src=&quot;https://code.jquery.com/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+                    &lt;script src=&quot;/src/script_6.js&quot;&gt;&lt;/script&gt;
+                &lt;/body&gt;       
+            </code></pre>
+        </div>
+    </div>                    
+                
+    <div class="section"></div>
+        <h2>CSS</h2>
+        <div class="code-block">
+            <pre><code>body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                height: 100vh;
+                margin: 0;
+                padding: 0;
+            }
+            #photo {
+                width: 150px;
+                height: 200px;
+                margin-top: 20px;
+            }
+            #caption {
+                font-size: 18px;
+                margin-top: 10px;
+                display: none;
+            }
+            </code></pre>
+        </div>
+    </div>
+
+
+    <div class="section">
+        <h2>JavaScript</h2>
+        <div class="code-block">
+            <pre><code>$(document).ready(function() {
+                // тут фото по центру в верхній частині
+                $('#photo').css({
+                    'position': 'absolute',
+                    'top': '20px',
+                    'left': '50%',
+                    'transform': 'translateX(-50%)'
+                });
+            
+                // зробив відображення підпису під фото
+                $('#caption').fadeIn(1000);
+            
+                // зменшую фото в 2 рази
+                $('#photo').animate({
+                    width: '75px',
+                    height: '100px'
+                }, 1000, function() {
+                    // зробив рух по вертикалі до нижньої межі
+                    $(this).animate({
+                        top: $(window).height() - $(this).height() - 20
+                    }, 2000, function() {
+                        // 5. Заміна фото
+                        $(this).attr('src', '/image/image6_2.jpg');
+            
+                        // прочрачність зроблюю 
+                        $(this).fadeOut(1000);
+                    });
+                });
+            });
+            </code></pre>
+        </div>
+    </div>
+</body>
+</html>

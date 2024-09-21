@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма реєстрації</title>
+    <link rel="stylesheet" href="style_4.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Форма реєстрації</h1>
+        <p>Завдання:</p>
+        <ol>
+            <li>Створити сторінку з динамічним змістом "Перевірка значень, введених користувачем поля форми для реєстрації". Форма повинна містити поля «Ім'я», «Прізвище», «Найменування організації», «Номер кредитної картки», «Номер телефону», «Адреса електронної пошти», кнопки «Надіслати» та «Очистити».</li>
+            <li>Здійснити перевірку заповненості даними всіх полів.</li>
+            <li>Побудувати шаблон для перевірки даних кредитної картки з обмеженням кількості спроб неправильного введення даних трьома.</li>
+            <li>Остання перевірка має контролювати структуру та вміст полів (правильність введення імені та прізвища, номери телефону, електронної адреси).</li>
+        </ol>
+
+        <div class="form-container">
+            <form id="registrationForm" class="form">
+                <input type="text" id="firstName" placeholder="Ім'я" required>
+                <input type="text" id="lastName" placeholder="Прізвище" required>
+                <input type="text" id="organization" placeholder="Найменування організації" required>
+                <input type="text" id="creditCard" placeholder="Номер кредитної картки" required>
+                <input type="text" id="phone" placeholder="Номер телефону" required>
+                <input type="email" id="email" placeholder="Адреса електронної пошти" required>
+                <div class="button-group">
+                    <button type="submit">Надіслати</button>
+                    <button type="reset">Очистити</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="task">
+            <h2>Завдання 8</h2>
+            <p>Дана рядок 'ave a#a a2a a$a a4a a5a aa aca'. Напишіть регулярний вираз, який замінить усі прогалини на '!'</p>
+            <input type="text" id="inputString" value="ave a#a a2a a$a a4a a5a aa aca" />
+            <button id="replaceSpaces">Замінити прогалини</button>
+            <div class="result" id="result"></div>
+        </div>
+    </div>
+    
+    <script src="/src/script_4.js"></script>
+</body>
+</html>
