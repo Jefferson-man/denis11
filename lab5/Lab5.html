@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery</title>
+    <link rel="stylesheet" href="style_5.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <div id="tasks" class="center">
+        <p>Завдання, за допомогою jQuery реалізувати дії: 8 варіант</p>
+        <ol>
+            <li>За подвійним натисканням на елемент сторінки виводити модальне вікно із значенням атрибуту цього елемента</li>
+            <li>Текст синього кольору рухається зліва направо до центру сторінки, що збільшується, стає жовтим, потім переміщається вправо та збільшується</li>
+            <li>Відображати інший елемент</li>
+        </ol>
+    </div>
+
+    <!-- Елемент с двойным кликом -->
+    <div id="dbl-click-element" data-info="Це модальне вікно з інформацією!" class="center">
+        Подвійний клік на мені для показу модального вікна.
+    </div>
+
+    <!-- Двигающий текст -->
+    <div id="animate-text-container" class="center">
+        <div id="animate-text">Текст, який рухається та змінюється</div>
+    </div>
+
+    <!-- Модульное окно -->
+    <div id="modal" class="center">
+        <p id="modal-text"></p>
+        <button id="close-modal" class="button">Закрити</button>
+    </div>
+
+    
+    <!-- Форма -->
+    <div id="form-section" class="center">
+        <form>
+            <label>Введіть пароль:</label>
+            <input type="password" id="password"><br><br>
+            
+            <input type="checkbox" id="show-keyword"> Я хочу вказати контрольне слово<br><br>
+            
+            <div id="keyword-section">
+                <label>Введіть контрольне слово:</label>
+                <input type="text" id="keyword">
+            </div>
+        </form>
+    </div>
+
+    <script src="/src/script_5.js"></script>
+</body>
+</html>

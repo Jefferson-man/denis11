@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №5</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .section {
+            margin: 40px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .code-block {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Лабораторна робота №5</h1>
+    <div class="section">
+        <h2>HTML</h2>
+        <div class="code-block">
+            <pre><code>&lt;!DOCTYPE html&gt;
+                &lt;html lang=&quot;uk&quot;&gt;
+                &lt;head&gt;
+                    &lt;meta charset=&quot;UTF-8&quot;&gt;
+                    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+                    &lt;title&gt;jQuery&lt;/title&gt;
+                    &lt;link rel=&quot;stylesheet&quot; href=&quot;style_5.css&quot;&gt;
+                    &lt;script src=&quot;https://code.jquery.com/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+                &lt;/head&gt;
+                &lt;body&gt;
+                
+                    &lt;div id=&quot;tasks&quot; class=&quot;center&quot;&gt;
+                        &lt;p&gt;Завдання, за допомогою jQuery реалізувати дії: 8 варіант&lt;/p&gt;
+                        &lt;ol&gt;
+                            &lt;li&gt;За подвійним натисканням на елемент сторінки виводити модальне вікно із значенням атрибуту цього елемента&lt;/li&gt;
+                            &lt;li&gt;Текст синього кольору рухається зліва направо до центру сторінки, що збільшується, стає жовтим, потім переміщається вправо та збільшується&lt;/li&gt;
+                            &lt;li&gt;Відображати інший елемент&lt;/li&gt;
+                        &lt;/ol&gt;
+                    &lt;/div&gt;
+                
+                    &lt;!-- Елемент с двойным кликом --&gt;
+                    &lt;div id=&quot;dbl-click-element&quot; data-info=&quot;Це модальне вікно з інформацією!&quot; class=&quot;center&quot;&gt;
+                        Подвійний клік на мені для показу модального вікна.
+                    &lt;/div&gt;
+                
+                    &lt;!-- Двигающий текст --&gt;
+                    &lt;div id=&quot;animate-text-container&quot; class=&quot;center&quot;&gt;
+                        &lt;div id=&quot;animate-text&quot;&gt;Текст, який рухається та змінюється&lt;/div&gt;
+                    &lt;/div&gt;
+                
+                    &lt;!-- Модульное окно --&gt;
+                    &lt;div id=&quot;modal&quot; class=&quot;center&quot;&gt;
+                        &lt;p id=&quot;modal-text&quot;&gt;&lt;/p&gt;
+                        &lt;button id=&quot;close-modal&quot; class=&quot;button&quot;&gt;Закрити&lt;/button&gt;
+                    &lt;/div&gt;
+                
+                    &lt;!-- Форма --&gt;
+                    &lt;div id=&quot;form-section&quot; class=&quot;center&quot;&gt;
+                        &lt;form&gt;
+                            &lt;label&gt;Введіть пароль:&lt;/label&gt;
+                            &lt;input type=&quot;password&quot; id=&quot;password&quot;&gt;&lt;br&gt;&lt;br&gt;
+                            
+                            &lt;input type=&quot;checkbox&quot; id=&quot;show-keyword&quot;&gt; Я хочу вказати контрольне слово&lt;br&gt;&lt;br&gt;
+                            
+                            &lt;div id=&quot;keyword-section&quot;&gt;
+                                &lt;label&gt;Введіть контрольне слово:&lt;/label&gt;
+                                &lt;input type=&quot;text&quot; id=&quot;keyword&quot;&gt;
+                            &lt;/div&gt;
+                        &lt;/form&gt;
+                    &lt;/div&gt;
+                
+                    &lt;script src=&quot;/src/script_5.js&quot;&gt;&lt;/script&gt;
+                &lt;/body&gt;
+                &lt;/html&gt;</code></pre>                
+        </div>
+    </div>                    
+                
+    <div class="section"></div>
+        <h2>CSS</h2>
+        <div class="code-block">
+            <pre><code>body {
+                font-family: Arial, sans-serif;
+                overflow-x: hidden;
+            }
+            
+            #tasks {
+                border: 2px solid #ccc;
+                padding: 20px;
+                margin: 20px auto;
+                width: 80%;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            
+            ol {
+                padding-left: 20px;
+            }
+            
+            #dbl-click-element {
+                cursor: pointer;
+                background-color: #f0f0f0;
+                padding: 30px;
+                margin: 10px 0;
+                border: 1px solid #ddd;
+                text-align: center;
+                color: red;
+            }
+            
+            #modal {
+                display: none;
+                position: fixed;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                padding: 20px;
+                background-color: #fff;
+                border: 2px solid #000;
+                z-index: 1000;
+            }
+            
+            #animate-text-container {
+                position: relative; 
+                margin: 80px auto;
+                background-color: rgba(255, 255, 255, 0.5);
+                padding: 10px;
+                border-radius: 5px;
+                width: 80%;
+            }
+            
+            #animate-text {
+                font-size: 30px;  
+                color: blue;  
+                white-space: nowrap;  
+                overflow: hidden; 
+            }
+            
+            
+            #form-section {
+                border-top: 2px solid #ccc;
+                padding-top: 20px;
+            }
+            
+            #keyword-section {
+                display: none;
+                margin-top: 10px;
+            }
+            
+            .button {
+                display: inline-block;
+                padding: 10px 20px;
+                cursor: pointer;
+                background-color: #007BFF;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                margin-top: 10px;
+            }
+            
+            .button:hover {
+                background-color: #0056b3;
+            }
+            
+            .center {
+                text-align: center;
+            }
+            
+            
+            </code></pre>
+        </div>
+    </div>
+
+
+    <div class="section">
+        <h2>JavaScript</h2>
+        <div class="code-block">
+            <pre><code>$(document).ready(function() {
+                //  показываю оконо
+                $("#dbl-click-element").dblclick(function() {
+                    var info = $(this).data("info");
+                    $("#modal-text").text(info);
+                    $("#modal").show();
+                });
+            
+                // закрываю окно
+                $("#close-modal").click(function() {
+                    $("#modal").hide();
+                });
+            
+                // анимация текста
+                $(document).ready(function() {
+                    $("#animate-text").css({
+                        position: "absolute",
+                        left: "0",
+                        top: "50px",  // фиксирую высоте
+                        color: "blue",  // начальный цвет
+                        fontSize: "30px"  // и размер шрифта
+                    }).animate({
+                        left: "50%",  // движение в право
+                        fontSize: "40px",  //  увеличиваю
+                    }, 2000, function() {
+                        // в центре меняем цвет на желтый
+                        $(this).css("color", "yellow");
+                
+                        $(this).animate({
+                            left: "100%",  // текст движется вправо, выходит за мою страницу
+                            fontSize: "50px",  // еще больше увеличивается
+                            opacity: 0  // делается прозрачным при уходе за экран
+                        }, 2000);
+                    });
+                });
+                
+            
+                // Завдання 3: Показати/сховати елемент форми
+                $("#show-keyword").change(function() {
+                    if ($(this).is(":checked")) {
+                        $("#keyword-section").slideDown();
+                    } else {
+                        $("#keyword-section").slideUp();
+                    }
+                });
+            });
+            </code></pre>
+        </div>
+    </div>
+
+</body>
+</html>
