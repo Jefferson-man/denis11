@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №4</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .section {
+            margin: 40px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .code-block {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Лабораторна робота №7 з XML</h1>
+    <h2>XML код</h2>
+    <div class="code-block">
+        <pre><code>
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;?xml-stylesheet type="text/xsl" href="style.xsl"?&gt;
+    
+    &lt;Doctors&gt;
+        &lt;Doctor&gt;
+            &lt;Specialization&gt;Терапевт&lt;/Specialization&gt;
+            &lt;Surname&gt;Іванов&lt;/Surname&gt;
+            &lt;Firstname&gt;Іван&lt;/Firstname&gt;
+            &lt;Patronymic&gt;Іванович&lt;/Patronymic&gt;
+            &lt;Days&gt;Понеділок, Середа, П'ятниця&lt;/Days&gt;
+            &lt;Time&gt;09:00-12:00&lt;/Time&gt;
+            &lt;Room&gt;101&lt;/Room&gt;
+        &lt;/Doctor&gt;
+        &lt;Doctor&gt;
+            &lt;Specialization&gt;Хірург&lt;/Specialization&gt;
+            &lt;Surname&gt;Петров&lt;/Surname&gt;
+            &lt;Firstname&gt;Петро&lt;/Firstname&gt;
+            &lt;Patronymic&gt;Петрович&lt;/Patronymic&gt;
+            &lt;Days&gt;Вівторок, Четвер&lt;/Days&gt;
+            &lt;Time&gt;14:00-17:00&lt;/Time&gt;
+            &lt;Room&gt;202&lt;/Room&gt;
+        &lt;/Doctor&gt;
+        &lt;Doctor&gt;
+            &lt;Specialization&gt;Педіатр&lt;/Specialization&gt;
+            &lt;Surname&gt;Сидоренко&lt;/Surname&gt;
+            &lt;Firstname&gt;Олександр&lt;/Firstname&gt;
+            &lt;Patronymic&gt;Сергійович&lt;/Patronymic&gt;
+            &lt;Days&gt;Понеділок, Вівторок, П'ятниця&lt;/Days&gt;
+            &lt;Time&gt;10:00-13:00&lt;/Time&gt;
+            &lt;Room&gt;103&lt;/Room&gt;
+        &lt;/Doctor&gt;
+        &lt;Doctor&gt;
+            &lt;Specialization&gt;Кардіолог&lt;/Specialization&gt;
+            &lt;Surname&gt;Коваленко&lt;/Surname&gt;
+            &lt;Firstname&gt;Олена&lt;/Firstname&gt;
+            &lt;Patronymic&gt;Анатоліївна&lt;/Patronymic&gt;
+            &lt;Days&gt;Середа, П'ятниця&lt;/Days&gt;
+            &lt;Time&gt;08:00-11:00&lt;/Time&gt;
+            &lt;Room&gt;204&lt;/Room&gt;
+        &lt;/Doctor&gt;
+        &lt;Doctor&gt;
+            &lt;Specialization&gt;Офтальмолог&lt;/Specialization&gt;
+            &lt;Surname&gt;Шевченко&lt;/Surname&gt;
+            &lt;Firstname&gt;Марія&lt;/Firstname&gt;
+            &lt;Patronymic&gt;Вікторівна&lt;/Patronymic&gt;
+            &lt;Days&gt;Вівторок, Четвер&lt;/Days&gt;
+            &lt;Time&gt;13:00-16:00&lt;/Time&gt;
+            &lt;Room&gt;305&lt;/Room&gt;
+        &lt;/Doctor&gt;
+        &lt;Doctor&gt;
+            &lt;Specialization&gt;Гінеколог&lt;/Specialization&gt;
+            &lt;Surname&gt;Мельник&lt;/Surname&gt;
+            &lt;Firstname&gt;Галина&lt;/Firstname&gt;
+            &lt;Patronymic&gt;Василівна&lt;/Patronymic&gt;
+            &lt;Days&gt;Понеділок, Четвер&lt;/Days&gt;
+            &lt;Time&gt;11:00-14:00&lt;/Time&gt;
+            &lt;Room&gt;102&lt;/Room&gt;
+        &lt;/Doctor&gt;
+        &lt;Doctor&gt;
+            &lt;Specialization&gt;Невролог&lt;/Specialization&gt;
+            &lt;Surname&gt;Демченко&lt;/Surname&gt;
+            &lt;Firstname&gt;Андрій&lt;/Firstname&gt;
+            &lt;Patronymic&gt;Михайлович&lt;/Patronymic&gt;
+            &lt;Days&gt;Середа, П'ятниця&lt;/Days&gt;
+            &lt;Time&gt;14:00-17:00&lt;/Time&gt;
+            &lt;Room&gt;203&lt;/Room&gt;
+        &lt;/Doctor&gt;
+        &lt;Doctor&gt;
+            &lt;Specialization&gt;Отоларинголог&lt;/Specialization&gt;
+            &lt;Surname&gt;Тимченко&lt;/Surname&gt;
+            &lt;Firstname&gt;Василь&lt;/Firstname&gt;
+            &lt;Patronymic&gt;Олександрович&lt;/Patronymic&gt;
+            &lt;Days&gt;Понеділок, Вівторок, Четвер&lt;/Days&gt;
+            &lt;Time&gt;12:00-15:00&lt;/Time&gt;
+            &lt;Room&gt;201&lt;/Room&gt;
+        &lt;/Doctor&gt;
+        &lt;Doctor&gt;
+            &lt;Specialization&gt;Дерматолог&lt;/Specialization&gt;
+            &lt;Surname&gt;Романюк&lt;/Surname&gt;
+            &lt;Firstname&gt;Наталія&lt;/Firstname&gt;
+            &lt;Patronymic&gt;Іванівна&lt;/Patronymic&gt;
+            &lt;Days&gt;Понеділок, П'ятниця&lt;/Days&gt;
+            &lt;Time&gt;09:00-11:00&lt;/Time&gt;
+            &lt;Room&gt;306&lt;/Room&gt;
+        &lt;/Doctor&gt;
+        &lt;Doctor&gt;
+            &lt;Specialization&gt;Уролог&lt;/Specialization&gt;
+            &lt;Surname&gt;Бондаренко&lt;/Surname&gt;
+            &lt;Firstname&gt;Дмитро&lt;/Firstname&gt;
+            &lt;Patronymic&gt;Петрович&lt;/Patronymic&gt;
+            &lt;Days&gt;Вівторок, Четвер&lt;/Days&gt;
+            &lt;Time&gt;14:00-16:00&lt;/Time&gt;
+            &lt;Room&gt;307&lt;/Room&gt;
+        &lt;/Doctor&gt;
+    &lt;/Doctors&gt;
+        </code></pre>
+    </div>
+                
+    <h2>XSL код</h2>
+<div class="code-block">
+    <pre><code>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+    &lt;xsl:template match="/"&gt;
+        &lt;html&gt;
+        &lt;body&gt;
+            &lt;h2&gt;Графік роботи лікарів&lt;/h2&gt;
+            &lt;table border="1"&gt;
+                &lt;tr bgcolor="#9acd32"&gt;
+                    &lt;th&gt;Спеціалізація&lt;/th&gt;
+                    &lt;th&gt;Прізвище&lt;/th&gt;
+                    &lt;th&gt;Ім'я&lt;/th&gt;
+                    &lt;th&gt;По батькові&lt;/th&gt;
+                    &lt;th&gt;Дні прийому&lt;/th&gt;
+                    &lt;th&gt;Час прийому&lt;/th&gt;
+                    &lt;th&gt;Номер кабінету&lt;/th&gt;
+                &lt;/tr&gt;
+                &lt;xsl:for-each select="Doctors/Doctor"&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;&lt;xsl:value-of select="Specialization"/&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;xsl:value-of select="Surname"/&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;xsl:value-of select="Firstname"/&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;xsl:value-of select="Patronymic"/&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;xsl:value-of select="Days"/&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;xsl:value-of select="Time"/&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;xsl:value-of select="Room"/&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/xsl:for-each&gt;
+            &lt;/table&gt;
+            &lt;h2&gt;UML&lt;/h2&gt;
+            &ltb&gt;Photo:&lt/b&gt; &ltimg src="/image/Foto7.png" alt="Doctor's Photo"/&gt; &lt;br/&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+    &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+    </code></pre>
+</div>
+
+</body>
+</html>
