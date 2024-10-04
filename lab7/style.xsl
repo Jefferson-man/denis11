@@ -28,6 +28,7 @@
             </table>
             <h2>UML</h2>
             <b>Photo:</b> <img src="/image/Foto7.png" alt="Doctor's Photo"/> <br/>
+            <b>Photo:</b> <img src="/image/Foto8.png" alt="Doctor's Photo"/> <br/>
         </body>
         </html>
     </xsl:template>
