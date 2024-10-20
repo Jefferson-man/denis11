@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №10</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .section {
+            margin: 40px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .code-block {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Лабораторна робота №10</h1>
+    <h2>HTML code</h2>
+    <div class="code-block">
+        <pre><code>
+            &lt;!DOCTYPE html&gt;
+            &lt;html lang="uk"&gt;
+            &lt;head&gt;
+                &lt;meta charset="UTF-8"&gt;
+                &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+                &lt;title&gt;XML Завдання&lt;/title&gt;
+                &lt;script src="/src/script_10.js" defer&gt;&lt;/script&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+                &lt;h3&gt;Варіант 8&lt;/h3&gt;
+                &lt;p&gt;Інформація про графік роботи лікарів медичного центру:&lt;/p&gt;
+                &lt;p&gt;- Спеціалізація лікаря;&lt;/p&gt;
+                &lt;p&gt;- лікар:&lt;/p&gt;
+                &lt;p&gt;- прізвище,&lt;/p&gt;
+                &lt;p&gt;- ім'я,&lt;/p&gt;
+                &lt;p&gt;- по батькові,&lt;/p&gt;
+                &lt;p&gt;- Дні прийому;&lt;/p&gt;
+                &lt;p&gt;- час прийому щодня;&lt;/p&gt;
+                &lt;p&gt;- Номер кабінету.&lt;/p&gt;
+            
+                &lt;h1&gt;Завдання 1: Відображення XML документа&lt;/h1&gt;
+                &lt;pre id="xml-original"&gt;&lt;/pre&gt;
+            
+                &lt;h1&gt;Завдання 2: Таблиця з кількох стовпців&lt;/h1&gt;
+                &lt;div id="xml-table"&gt;&lt;/div&gt;
+            
+                &lt;h1&gt;Завдання 3: Таблиця зі словесними значеннями&lt;/h1&gt;
+                &lt;div id="xml-table-converted"&gt;&lt;/div&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;            
+        <pre></code>
+    </div>
+                
+    <h2>JavaScript</h2>
+<div class="code-block">
+    <pre><code>
+function loadXML() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'data.xml', true);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var xmlText = xhr.responseText;
+            var xml = xhr.responseXML;
+            
+            document.getElementById('xml-original').textContent = xmlText;
+            displayDoctors(xml, 'xml-table', false);
+            displayDoctors(xml, 'xml-table-converted', true);
+        }
+    };
+    xhr.send();
+}
+
+// отображения таблицы из XML
+function displayDoctors(xml, elementId, convertValuesFlag) {
+    var output = document.getElementById(elementId);
+    var table = document.createElement('table');
+    table.border = '1';
+
+    var headers = ['Спеціалізація', 'Прізвище', 'Ім\'я', 'Дні прийому', 'Час прийому', 'Номер кабінету'];
+    var tr = document.createElement('tr');
+    headers.forEach(function (header) {
+        var th = document.createElement('th');
+        th.textContent = header;
+        tr.appendChild(th);
+    });
+    table.appendChild(tr);
+
+    // данных из XML
+    var doctors = xml.getElementsByTagName('Doctor');
+    for (var i = 0; i &lt; doctors.length; i++) {
+        var doctor = doctors[i];
+        var row = document.createElement('tr');
+
+        var specialization = doctor.getElementsByTagName('Specialization')[0].textContent;
+        row.appendChild(createCell(specialization));
+
+        var surname = doctor.getElementsByTagName('Surname')[0].textContent;
+        row.appendChild(createCell(surname));
+
+        var firstname = doctor.getElementsByTagName('Firstname')[0].textContent;
+        row.appendChild(createCell(firstname));
+    
+        var days = doctor.getElementsByTagName('Days')[0].textContent;
+        row.appendChild(createCell(days));
+
+        var time = doctor.getElementsByTagName('Time')[0].textContent;
+        if (convertValuesFlag) {
+            time = convertTimeAndRoom(time);
+        }
+        row.appendChild(createCell(time));
+
+        var room = doctor.getElementsByTagName('Room')[0].textContent;
+        if (convertValuesFlag) {
+            room = convertTimeAndRoom(room);
+        }
+        row.appendChild(createCell(room));
+
+        table.appendChild(row);
+    }
+    output.innerHTML = '';
+    output.appendChild(table);
+}
+
+// создания ячейки таблицы
+function createCell(text) {
+    var cell = document.createElement('td');
+    cell.textContent = text;
+    return cell;
+}
+
+function convertTimeAndRoom(value) {
+    var numberMap = {
+        '0': 'нуль',
+        '1': 'один',
+        '2': 'два',
+        '3': 'три',
+        '4': 'чотири',
+        '5': 'п\'ять',
+        '6': 'шість',
+        '7': 'сім',
+        '8': 'вісім',
+        '9': 'дев\'ять'
+    };
+    return value.split('').map(function (char) {
+        return numberMap[char] ? numberMap[char] + ' ' : char; 
+    }).join('');
+}
+
+window.onload = loadXML;
+    </code></pre>
+</div>
+</body>
+</html>

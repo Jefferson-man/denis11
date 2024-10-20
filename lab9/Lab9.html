@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Графік роботи лікарів</title>
+    <script src="/src/script_9.js" defer></script> 
+</head>
+<body>
+    <h3>Варіант 8</h3>
+            <p>Інформація про графік роботи лікарів медичного центру:</p>
+            <p>- Спеціалізація лікаря;</p>
+            <p>- лікар:</p>
+            <p>- прізвище,</p>
+            <p>- ім'я,</p>
+            <p>- по батькові,</p>
+            <p>- Дні прийому;</p>
+            <p>- час прийому щодня;</p>
+            <p>- Номер кабінету.</p>
+    <h1>Графік роботи лікарів</h1>
+    <p>Виберіть день для фільтрації:</p>
+    <select id="dayFilter" onchange="filterData()">
+        <option value="">Всі дні</option>
+        <option value="Понеділок">Понеділок</option>
+        <option value="Вівторок">Вівторок</option>
+        <option value="Середа">Середа</option>
+        <option value="Четвер">Четвер</option>
+        <option value="П'ятниця">П'ятниця</option>
+    </select>
+    <div id="output">
+    </div>
+</body>
+</html>
