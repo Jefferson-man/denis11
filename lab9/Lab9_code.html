@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №9</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .section {
+            margin: 40px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .code-block {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Лабораторна робота №9</h1>
+    <h2>SXL</h2>
+    <div class="code-block">
+      <pre><code>
+        &lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+            &lt;xsl:output method="html" encoding="UTF-8" indent="yes"/&gt;
+            &lt;xsl:template match="/Doctors"&gt;
+                &lt;table&gt;
+                    &lt;tr&gt;
+                        &lt;th&gt;Спеціалізація&lt;/th&gt;
+                        &lt;th&gt;Прізвище&lt;/th&gt;
+                        &lt;th&gt;Ім'я&lt;/th&gt;
+                        &lt;th&gt;По батькові&lt;/th&gt;
+                        &lt;th&gt;Дні прийому&lt;/th&gt;
+                        &lt;th&gt;Час&lt;/th&gt;
+                        &lt;th&gt;Кабінет&lt;/th&gt;
+                    &lt;/tr&gt;
+                    &lt;xsl:apply-templates select="Doctor"/&gt;
+                &lt;/table&gt;
+            &lt;/xsl:template&gt;
+            &lt;xsl:template match="Doctor"&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;xsl:value-of select="Specialization"/&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;xsl:value-of select="Surname"/&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;xsl:value-of select="Firstname"/&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;xsl:value-of select="Patronymic"/&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;xsl:value-of select="Days"/&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;xsl:value-of select="Time"/&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;xsl:value-of select="Room"/&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/xsl:template&gt;
+        &lt;/xsl:stylesheet&gt;
+        </code></pre>        
+    </div>
+                
+    <h2>HTML</h2>
+<div class="code-block">
+  <pre><code>
+    &lt;!DOCTYPE html&gt;
+    &lt;html lang="uk"&gt;
+    &lt;head&gt;
+        &lt;meta charset="UTF-8"&gt;
+        &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+        &lt;title&gt;Таблиця лікарів&lt;/title&gt;
+        &lt;link rel="stylesheet" href="style.css"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Таблиця лікарів&lt;/h1&gt;
+    
+        &lt;label for="daySelect"&gt;Виберіть день прийому:&lt;/label&gt;
+        &lt;select id="daySelect" onchange="filterDoctors()"&gt;
+            &lt;option value=""&gt;Всі дні&lt;/option&gt;
+            &lt;option value="Понеділок"&gt;Понеділок&lt;/option&gt;
+            &lt;option value="Вівторок"&gt;Вівторок&lt;/option&gt;
+            &lt;option value="Середа"&gt;Середа&lt;/option&gt;
+            &lt;option value="Четвер"&gt;Четвер&lt;/option&gt;
+            &lt;option value="П'ятниця"&gt;П'ятниця&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;button onclick="sortDoctors()"&gt;Сортувати за прізвищем&lt;/button&gt;
+    
+        &lt;div id="originalData"&gt;&lt;/div&gt;
+        &lt;h2&gt;Відфільтровані лікарі:&lt;/h2&gt;
+        &lt;div id="filteredData"&gt;&lt;/div&gt;
+        &lt;h2&gt;Сортована таблиця:&lt;/h2&gt;
+        &lt;div id="sortedData"&gt;&lt;/div&gt;
+    
+        &lt;script src="/src/script_9.js"&gt;&lt;/script&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+    </code></pre> 
+    <h2>JS</h2>
+<div class="code-block">
+  <pre><code>
+    document.addEventListener("DOMContentLoaded", () => {
+        loadOriginalData();
+    });
+    
+    function loadOriginalData() {
+        fetch("index.xml")
+            .then(response => response.text())
+            .then(data => {
+                const xml = loadXMLString(data);
+                fetch("style.xsl")
+                    .then(response => response.text())
+                    .then(xslData => {
+                        const xsl = loadXMLString(xslData);
+                        const resultDocument = transformXML(xml, xsl);
+                        document.getElementById("originalData").appendChild(resultDocument);
+                    });
+            });
+    }
+    
+    function loadXMLString(xmlString) {
+        const parser = new DOMParser();
+        return parser.parseFromString(xmlString, "text/xml");
+    }
+    
+    function transformXML(xml, xsl) {
+        const xsltProcessor = new XSLTProcessor();
+        xsltProcessor.importStylesheet(xsl);
+        return xsltProcessor.transformToFragment(xml, document);
+    }
+    
+    function filterDoctors() {
+        const selectedDay = document.getElementById("daySelect").value;
+    
+        fetch("index.xml")
+            .then(response => response.text())
+            .then(data => {
+                const xml = loadXMLString(data);
+                const filteredDoctors = Array.from(xml.getElementsByTagName("Doctor")).filter(doctor => {
+                    const daysText = doctor.getElementsByTagName("Days")[0].textContent;
+    
+                    // возращает всех
+                    if (selectedDay === "") {
+                        return true; 
+                    }
+    
+                    // фильрация по дню
+                    return daysText.split(',').map(day => day.trim()).includes(selectedDay);
+                });
+    
+                const filteredXML = createFilteredXML(filteredDoctors);
+                fetch("style.xsl")
+                    .then(response => response.text())
+                    .then(xslData => {
+                        const xsl = loadXMLString(xslData);
+                        const resultDocument = transformXML(filteredXML, xsl);
+                        const filteredDataDiv = document.getElementById("filteredData");
+                        filteredDataDiv.innerHTML = "";
+                        filteredDataDiv.appendChild(resultDocument);
+                    });
+            });
+    }
+    
+    function createFilteredXML(doctors) {
+        const xmlString = `<Doctors>${doctors.map(doctor => new XMLSerializer().serializeToString(doctor)).join('')}</Doctors>`;
+        return loadXMLString(xmlString);
+    }
+    
+    function sortDoctors() {
+        fetch("index.xml")
+            .then(response => response.text())
+            .then(data => {
+                const xml = loadXMLString(data);
+                const doctorsArray = Array.from(xml.getElementsByTagName("Doctor"));
+    
+                // за фамилией
+                doctorsArray.sort((a, b) => {
+                    const surnameA = a.getElementsByTagName("Surname")[0].textContent;
+                    const surnameB = b.getElementsByTagName("Surname")[0].textContent;
+                    return surnameA.localeCompare(surnameB);
+                });
+    
+                const sortedXML = createFilteredXML(doctorsArray);
+                fetch("style.xsl")
+                    .then(response => response.text())
+                    .then(xslData => {
+                        const xsl = loadXMLString(xslData);
+                        const resultDocument = transformXML(sortedXML, xsl);
+                        const sortedDataDiv = document.getElementById("sortedData");
+                        sortedDataDiv.innerHTML = "";
+                        sortedDataDiv.appendChild(resultDocument);
+                    });
+            });
+    }
+    </code></pre>
+    
+</div>
+</body>
+</html>

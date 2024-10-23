@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таблиця лікарів</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Таблиця лікарів</h1>
+
+    <label for="daySelect">Виберіть день прийому:</label>
+    <select id="daySelect" onchange="filterDoctors()">
+        <option value="">Всі дні</option>
+        <option value="Понеділок">Понеділок</option>
+        <option value="Вівторок">Вівторок</option>
+        <option value="Середа">Середа</option>
+        <option value="Четвер">Четвер</option>
+        <option value="П'ятниця">П'ятниця</option>
+    </select>
+    <button onclick="sortDoctors()">Сортувати за прізвищем</button>
+
+    <div id="originalData"></div>
+    <h2>Відфільтровані лікарі:</h2>
+    <div id="filteredData"></div>
+    <h2>Сортована таблиця:</h2>
+    <div id="sortedData"></div>
+
+    <script src="/src/script_9.js"></script>
+</body>
+</html>
