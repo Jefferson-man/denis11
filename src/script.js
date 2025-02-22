@@ -97,7 +97,22 @@ function toggleCondition() {
         3. Використовуючи методи DOM XML, замініть цифрові значення їх словесними еквівалентами.`,
         resultLink: "/lab10/Lab10.html",
         codeLink: "/lab10/Lab10_code.html"
-    }
+    },
+    11: {
+        condition: `2.1`,
+        resultLink: "/2.1/lab1.html",
+        codeLink: "/2.1/lab1.html"
+    },
+    12: {
+        condition: `2.2`,
+        resultLink: "/2.2/lab2.html",
+        codeLink: "/2.2/lab2.html"
+    },
+    13: {
+        condition: `2.3`,
+        resultLink: "/2.3/lab3.html",
+        codeLink: "/2.3/lab3_code.html"
+    },
 };
 
 
