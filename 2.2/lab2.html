@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Умова та Фото</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="content">
+        <div class="text-condition">
+            <h2>Завдання 1: Аналіз HTTP-запиту через браузер</h2>
+            <p><strong>Веб-сторінка:</strong> https://example.com (7 варіант)</p>
+            <p><strong>Типи HTTP-запитів, які виконуються:</strong> GET</p>
+            <p><strong>Заголовки запитів:</strong></p>
+            <ul>
+                <li>User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 OPR/116.0.0.0</li>
+                <li>Content-Type: text/html; text/javascript; text/css</li>
+                <li>Host: example.com</li>
+            </ul>
+            <p><strong>Відповідь сервера (статусний код):</strong></p>
+            <ul>
+                <li>200 OK</li>
+                <li>304 Not Modified</li>
+            </ul>
+            <p><strong>Ресурс сторінки повертає статусний код:</strong> 200 OK</p>
+            <p><strong>Заголовки для кешування:</strong> Cache-Control</p>
+        </div>
+
+        <div class="text-condition">
+            <h2>Завдання 2: Надсилання запиту через Postman</h2>
+            <p><strong>Запит:</strong> https://jsonplaceholder.typicode.com/posts</p>
+            <p><strong>Проаналізуйте отриману відповідь:</strong></p>
+            <ul>
+                <li>Статусний код: 200 OK</li>
+                <li>Формат даних: JSON</li>
+            </ul>
+            <p><strong>Чи змінилася відповідь сервера після додавання заголовка?</strong> Ні, відповідь сервера не змінилася.</p>
+            <img src="/image/3.2.png">
+        </div>
+
+        <div class="text-condition">
+            <h2>Завдання 3: Відправка POST-запиту</h2>
+            <p><strong>Який статусний код відповіді було отримано?</strong> 201 Created</p>
+            <p><strong>Які заголовки були використані у відповіді сервера?</strong></p>
+            <ul>
+                <li>Content-Type: application/json</li>
+            </ul>
+            <img src="/image/3.3.png">
+        </div>
+
+        <div class="text-condition">
+            <h2>Завдання 4: Створення простого HTTP-сервера</h2>
+            <p>Інформація про створення простого HTTP-сервера ще не надана.</p>
+            <img src="/image/3.4.png">
+            <img src="/image/3.4(2).png">
+        </div>
+    </div>
+</body>
+</html>

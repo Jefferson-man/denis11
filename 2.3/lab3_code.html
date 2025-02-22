@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .section {
+            margin: 40px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .code-block {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Лабораторна робота №2.3</h1>
+
+    <!-- HTML Section -->
+    <div class="section">
+        <h2>HTML</h2>
+        <div class="code-block">
+            <pre><code>є
+                &lt;!DOCTYPE html&gt;
+                &lt;html lang=&quot;uk&quot;&gt;
+                &lt;head&gt;
+                    &lt;meta charset=&quot;UTF-8&quot;&gt;
+                    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+                    &lt;title&gt;Додавання товару&lt;/title&gt;
+                &lt;/head&gt;
+                &lt;body&gt;
+                    &lt;h1&gt;Додати новий товар&lt;/h1&gt;
+                    &lt;form action=&quot;/api/products&quot; method=&quot;POST&quot;&gt;
+                        &lt;input type=&quot;text&quot; name=&quot;name&quot; placeholder=&quot;Введите имя&quot;&gt;
+                        &lt;input type=&quot;number&quot; name=&quot;price&quot; placeholder=&quot;Введите цену&quot;&gt;
+                        &lt;button type=&quot;submit&quot;&gt;Отправить&lt;/button&gt;
+                    &lt;/form&gt;
+                    
+                    &lt;p id=&quot;Message&quot;&gt;&lt;/p&gt;
+                
+                    &lt;script src=&quot;/script.js&quot;&gt;&lt;/script&gt;
+                &lt;/body&gt;
+                &lt;/html&gt;
+            </code></pre>
+        </div>
+    </div>                    
+    <div class="section">
+        <h2>JavaScript</h2>
+        <div class="code-block">
+            <pre><code>document.addEventListener("DOMContentLoaded", function () {
+                const form = document.querySelector("form");
+            
+                form.addEventListener("submit", async function (event) {
+                    event.preventDefault();
+                    const formData = new FormData(form);
+                    const data = {
+                        name: formData.get("name"),
+                        price: formData.get("price")
+                    };
+            
+                    const response = await fetch("http://localhost:3000/api/products", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(data)
+                    });
+            
+                    const result = await response.json();
+                    console.log(result);
+            
+                    if (result.success) {
+                        alert("Товар добавлен!");
+                        form.reset();
+                    } else {
+                        alert("Ошибка: " + result.error);
+                    }
+                });
+            });
+             
+            </code></pre>
+        </div>
+    </div>
+    <div class="section">
+        <h2>Node js server</h2>
+        <div class="code-block">
+            <pre><code>
+                const express = require('express');
+                const path = require('path');
+                const bodyParser = require('body-parser');
+                
+                const app = express();
+                const port = 3000;
+                
+                app.use(bodyParser.json())
+                  app.use(bodyParser.urlencoded({ extended: true }));
+                app.use(express.json());  
+                
+                // главная страницы
+                app.get('/', (req, res) => {
+                    res.sendFile(path.join(__dirname, 'index.html'));
+                });
+                
+                // массив товаров 
+                let products = [];
+                
+                // Post запросов для добавления товаров
+                app.post('/api/products', (req, res) => {
+                    console.log (req.body);
+                    const { name, price } = req.body;
+                    console.log(name,price)
+                    if (!name || !price) {
+                        return res.status(400).json({ error: "Заповніть всі поля" });
+                    }
+                
+                    const newProduct = { name, price };
+                    products.push(newProduct);  // добавляем в массив
+                    res.json(newProduct);  // возвращает
+                });
+                
+                //  Get-запросов для получения списка товаров
+                app.get('/api/products', (req, res) => {
+                    res.json(products);  // Возвращаем все товары
+                });
+                
+                // запуск 
+                app.listen(port, () => {
+                    console.log(`Сервер запущений на http://localhost:${port}`);
+                });                
+            </code></pre>
+        </div>
+    </div>
+</body>
+</html>
