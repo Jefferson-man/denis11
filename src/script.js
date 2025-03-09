@@ -113,6 +113,11 @@ function toggleCondition() {
         resultLink: "/2.3/lab3.html",
         codeLink: "/2.3/lab3_code.html"
     },
+    14: {
+        condition: `2.4`,
+        resultLink: "/2.4/lab4.html",
+        codeLink: "/2.4/lab4_code.html"
+    },
 };
 
 
