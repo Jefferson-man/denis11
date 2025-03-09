@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .section {
+            margin: 40px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .code-block {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Лабораторна робота №2.4</h1>
+    <div class="section">
+        <h2>Node js server</h2>
+        <div class="code-block">
+            <pre><code>
+                const express = require('express');
+const app = express();
+const port = 3000;
+app.use(express.json());
+
+//  логизапросів
+app.use((req, res, next) => {
+    console.log(`Метод: ${req.method}, URL: ${req.url}`);
+    next();
+});
+
+// GET на корень
+app.get('/', (req, res) => {
+    res.send('Привіт, Express!');
+});
+
+// GET на /api/info
+app.get('/api/info', (req, res) => {
+    res.json({ message: 'Це GET-запит' });
+});
+
+// POST на /api/data
+app.post('/api/data', (req, res) => {
+    console.log("Отладка req.body:", req.body);
+    const { name } = req.body;
+    if (!name) {
+        return res.status(400).json({ error: 'Ім’я є обов’язковим' });
+    }
+    res.json({ message: `Привіт, ${name}!` });
+});
+
+// GET на /api/country
+app.get('/api/country', (req, res) => {
+    res.json({ country: 'Україна' });
+});
+
+// POST на /api/split
+app.post('/api/split', (req, res) => {
+    const { text } = req.body;
+
+    if (!text || typeof text !== 'string') {
+        return res.status(400).json({ error: 'Необхідно передати рядок' });
+    }
+    const words = text.split(/\s+/).filter(word => word.length > 0);
+    res.json({ split: words });
+});
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Помилка на сервері' });
+});
+
+app.listen(port, () => {
+    console.log(`Сервер запущений на http://localhost:${port}`);
+});
+
+
+
+            </code></pre>
+        </div>
+    </div>
+</body>
+</html>
