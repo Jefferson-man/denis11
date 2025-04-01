@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .section {
+            margin: 40px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .code-block {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Лабораторна робота №2.5</h1>
+    <div class="section">
+        <h2>Server app</h2>
+        <div class="code-block">
+            <pre><code>
+                const express = require('express');
+const mongoose = require('mongoose');
+const http = require('http');
+const WebSocket = require('ws');
+const cors = require('cors');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const jwt = require('jsonwebtoken');
+const path = require('path');
+require('dotenv').config();
+
+// инициализация Express и сервера
+const app = express();
+const server = http.createServer(app);
+
+// настраиваю документацию Swagger
+const swaggerSpec = swaggerJsdoc({
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Forum API',
+      version: '1.0.0',
+    },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+  },
+  apis: [path.join(__dirname, 'routes/*.js')], // где будет документацию
+});
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// создаю WebSocket сервера
+const wss = new WebSocket.Server({ noServer: true });
+const topicSubscriptions = new Map(); // храню подписки на темы 
+
+// обрабатываю апгрейд соединения до WebSocketа
+server.on('upgrade', (request, socket, head) => {
+  // проверка токена при подключении
+  const token = new URL(request.url, `http://${request.headers.host}`).searchParams.get('token');
+  
+  if (!token) {
+    socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+    socket.destroy();
+    return;
+  }
+
+  try {
+    jwt.verify(token, process.env.JWT_SECRET);
+    wss.handleUpgrade(request, socket, head, (ws) => {
+      wss.emit('connection', ws, request);
+    });
+  } catch (err) {
+    socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+    socket.destroy();
+  }
+});
+// событий подключения
+wss.on('connection', (ws, request) => {
+  try {
+    // Аутендификация подключающегося пользователя
+    const token = new URL(request.url, `http://${request.headers.host}`).searchParams.get('token');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    ws.userId = decoded.id;
+    // обработки клиентские сообщения
+    ws.on('message', (message) => {
+      try {
+        const data = JSON.parse(message);
+        // подписывается на тему
+        if (data.type === 'joinTopic') {
+          if (ws.topicId) {
+            const subscribers = topicSubscriptions.get(ws.topicId);
+            if (subscribers) subscribers.delete(ws);
+          }
+          ws.topicId = data.topicId;
+          if (!topicSubscriptions.has(data.topicId)) {
+            topicSubscriptions.set(data.topicId, new Set());
+          }
+          topicSubscriptions.get(data.topicId).add(ws);
+          console.log(`Пользователь ${ws.userId} присоединился к теме ${data.topicId}`);
+        }
+        // отправка нового ответа
+        if (data.type === 'newReply' && ws.topicId) {
+          // рассылаю ответы всем подписчикам темы
+          const messageToSend = JSON.stringify({
+            type: 'newReply',
+            data: {
+              topicId: ws.topicId,
+              content: data.content,
+              author: ws.userId,
+              createdAt: new Date()
+            }
+          });
+
+          const subscribers = topicSubscriptions.get(ws.topicId) || new Set();
+          subscribers.forEach(client => {
+            if (client.readyState === WebSocket.OPEN) {
+              client.send(messageToSend);
+            }
+          });
+        }
+      } catch (err) {
+        console.error('Ошибка обработки сообщения:', err);
+      }
+    });
+
+    ws.on('close', () => {
+      if (ws.topicId) {
+        const subscribers = topicSubscriptions.get(ws.topicId);
+        if (subscribers) {
+          subscribers.delete(ws);
+        }
+      }
+    });
+
+  } catch (err) {
+    ws.close(1008, 'Ошибка аутентификации');
+  }
+});
+
+// WebSocket доступным в маршрутах
+app.set('wss', wss);
+app.set('topicSubscriptions', topicSubscriptions);
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Routes
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/forum', require('./routes/forum'));
+
+// подключение к MongoDB
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('MongoDB подключен'))
+  .catch(err => console.error('MongoDB ошибка:', err));
+
+const PORT = process.env.PORT || 5001;
+server.listen(PORT, () => {
+  console.log(`Сервер запущен на http://localhost:${PORT}`);
+  console.log(`WebSocket: ws://localhost:${PORT}`);
+});
+            </code></pre>
+        </div>
+        <h2>Аутендификация</h2>
+        <div class="code-block">
+            <pre><code>
+                const express = require('express');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../models/user.js');
+const router = express.Router();
+router.post('/register', async (req, res) => {
+    try {
+      const { username, email, password } = req.body;
+      // хеширование пароля
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = new User({ username, email, password: hashedPassword });
+      await user.save();
+      res.status(201).json({ message: "Пользователь создан" });
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  });
+  router.post('/login', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const user = await User.findOne({ email });
+      if (!user) return res.status(400).json({ error: "Пользователь не найден" });
+      // проверка пароля
+      const validPass = await bcrypt.compare(password, user.password);
+      if (!validPass) return res.status(400).json({ error: "Неверный пароль" });
+      // генерация JWT токена
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      res.json({ token });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+  
+  module.exports = router;
+            </code></pre>
+        </div>
+        <h2>Форум</h2>
+        <div class="code-block">
+            <pre><code>
+                const express = require('express');
+const router = express.Router();
+const authMiddleware = require('../middlewares/authMiddleware');
+const Topic = require('../models/topic');
+const Reply = require('../models/reply');
+                // cоздание новой темы
+                router.post('/topics', authMiddleware, async (req, res) => { // создание новой темы
+                    try {
+                      const topic = new Topic({
+                        title: req.body.title,
+                        content: req.body.content,
+                        author: req.userId // ID из JWT токена
+                      });
+                      await topic.save();
+                      res.status(201).json(topic);
+                    } catch (err) {
+                      res.status(400).json({ error: err.message });
+                    }
+                  });
+                // получение всех тем
+                router.get('/topics', async (req, res) => {
+                    try {
+                      const topics = await Topic.find().populate('author', 'username');
+                      res.json(topics);
+                    } catch (err) {
+                      res.status(500).json({ error: err.message });
+                    }
+                  });
+                // добавление ответа в тему
+router.post('/topics/:id/replies', authMiddleware, async (req, res) => {
+  try {
+    const reply = new Reply({
+      content: req.body.content,
+      topic: req.params.id,
+      author: req.userId
+    });
+    await reply.save();
+    // обновление изменения времени темы
+    await Topic.findByIdAndUpdate(req.params.id, { updatedAt: Date.now() });
+
+    // WebSocket уведомление
+    const wss = req.app.get('wss');
+    const topicSubscriptions = req.app.get('topicSubscriptions');
+    
+    const message = JSON.stringify({
+      type: 'newReply',
+      data: {
+        topicId: req.params.id,
+        content: req.body.content,
+        author: req.userId,
+        createdAt: new Date()
+      }
+    });
+    // отправка всем подписчикам темы
+    const subscribers = topicSubscriptions.get(req.params.id) || new Set();
+    subscribers.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    });
+
+    res.status(201).json(reply);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+// Получить все ответы для темы
+router.get('/topics/:id/replies', async (req, res) => {
+  try {
+    const replies = await Reply.find({ topic: req.params.id })
+      .populate('author', 'username');
+    res.json(replies);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+module.exports = router;
+            </code></pre>
+        </div>
+        <h2>User.js</h2>
+        <div class="code-block">
+            <pre><code>
+                const mongoose = require('mongoose');
+
+const UserSchema = new mongoose.Schema({
+  username: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true }
+});
+
+module.exports = mongoose.model('User', UserSchema);
+            </code></pre>
+        </div>
+        <h2>Topic.js</h2>
+        <div class="code-block">
+            <pre><code>
+                const mongoose = require('mongoose');
+
+                const TopicSchema = new mongoose.Schema({
+                  title: { type: String, required: true },
+                  content: { type: String, required: true },
+                  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+                  createdAt: { type: Date, default: Date.now },
+                  updatedAt: { type: Date, default: Date.now }
+                });
+                
+                module.exports = mongoose.model('Topic', TopicSchema);
+            </code></pre>
+        </div>
+        <h2>Reply.js</h2>
+        <div class="code-block">
+            <pre><code>
+                const mongoose = require('mongoose');
+
+                const ReplySchema = new mongoose.Schema({
+                  content: { type: String, required: true },
+                  topic: { type: mongoose.Schema.Types.ObjectId, ref: 'Topic', required: true },
+                  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+                  createdAt: { type: Date, default: Date.now }
+                });
+                
+                module.exports = mongoose.model('Reply', ReplySchema);
+            </code></pre>
+        </div>
+        <h2>authMiddleware.js</h2>
+        <div class="code-block">
+            <pre><code>
+                const jwt = require('jsonwebtoken');
+
+module.exports = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  
+  if (!token) return res.status(401).json({ error: "Доступ запрещен" });
+
+  try {
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId = verified.id;
+    next();
+  } catch (err) {
+    res.status(400).json({ error: "Неверный токен" });
+  }
+};
+            </code></pre>
+        </div>
+        <h2>Chat.js</h2>
+        <div class="code-block">
+            <pre><code>
+                class ForumWebSocketClient {
+                    constructor() {
+                      this.socket = null;
+                      this.token = null;
+                      this.currentTopic = null;
+                    }
+                    // подключение к WebSocket серверу
+                    connect(token) {
+                      this.token = token;
+                      this.socket = new WebSocket(`ws://localhost:5001?token=${this.token}`);
+                  
+                      this.socket.onopen = () => {
+                        console.log('WebSocket подключен');
+                        if (this.currentTopic) {
+                          this.joinTopic(this.currentTopic);
+                        }
+                      };
+                      // обработка входящих сообщений
+                      this.socket.onmessage = (event) => {
+                        try {
+                          const message = JSON.parse(event.data);
+                          if (message.type === 'newReply') {
+                            console.log('Новый ответ получен:', message.data);
+                          }
+                        } catch (err) {
+                          console.error('Ошибка разбора сообщения:', err);
+                        }
+                      };
+                  
+                      this.socket.onclose = () => {
+                        console.log('WebSocket отключен');
+                      };
+                    }
+                    // подписка на тем
+                    joinTopic(topicId) {
+                      this.currentTopic = topicId;
+                      if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+                        this.socket.send(JSON.stringify({
+                          type: 'joinTopic',
+                          topicId
+                        }));
+                      }
+                    }
+                    // отправка ответа в тему
+                    sendReply(content) {
+                      if (this.socket && this.socket.readyState === WebSocket.OPEN && this.currentTopic) {
+                        this.socket.send(JSON.stringify({
+                          type: 'newReply',
+                          topicId: this.currentTopic,
+                          content
+                        }));
+                      }
+                    }
+                  }
+            </code></pre>
+        </div>
+    </div>
+</body>
+</html>
