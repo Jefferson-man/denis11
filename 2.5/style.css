@@ -1,4 +1,4 @@
-body {
+       body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
             margin: 0;
@@ -8,7 +8,7 @@ body {
         }
 
         .content {
-            max-width: 1200px; /* Увеличил максимальную ширину */
+            max-width: 100%;
             margin: 0 auto;
             background-color: white;
             padding: 30px;
@@ -37,15 +37,19 @@ body {
             font-size: 1.5rem;
         }
 
+        .video-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto;
+        }
+
         .video-wrapper {
             position: relative;
-            padding-bottom: 56.25%; /* Соотношение 16:9 */
+            padding-bottom: 56.25%; /* 16:9 соотношение */
             height: 0;
             overflow: hidden;
-            margin: 30px 0;
             background: #000;
             border-radius: 8px;
-            min-height: 500px; /* Минимальная высота видео */
         }
 
         .video-wrapper iframe {
@@ -103,9 +107,5 @@ body {
             
             h2 {
                 font-size: 1.3rem;
-            }
-            
-            .video-wrapper {
-                min-height: 300px; /* Уменьшаем минимальную высоту для мобильных */
             }
         }
