@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №6</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .section {
+            margin: 40px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .code-block {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Лабораторна робота №2.6</h1>
+    <div class="section">
+        <h2>Dockerfile</h2>
+        <div class="code-block">
+            <pre><code>
+              FROM mongo:latest
+              ENV MONGO_INITDB_ROOT_USERNAME=admin
+              ENV MONGO_INITDB_ROOT_PASSWORD=password
+              ENV MONGO_INITDB_DATABASE=testdb
+              EXPOSE 27017
+              
+            </code></pre>
+        </div>
+        <h2>docker-compose.yml</h2>
+        <div class="code-block">
+            <pre><code>
+              version: '3.8'
+              services: # Секція с сервисами
+                mongodb:
+                  image: mongo:latest # беру образ MongoDB
+                  container_name: mongodb_container
+                  restart: always
+                  environment: # налаштунки MongoDB
+                    MONGO_INITDB_ROOT_USERNAME: admin
+                    MONGO_INITDB_ROOT_PASSWORD: password
+                  ports:
+                    - "27017:27017"
+                  volumes: # підключаю том для храніння данних
+                    - mongodb_data:/data/db
+              volumes: # обьявляю тома
+                mongodb_data:
+              
+            </code></pre>
+        </div>
+    </div>
+</body>
+</html>
