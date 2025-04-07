@@ -122,7 +122,12 @@ function toggleCondition() {
         condition: `2.5`,
         resultLink: "/2.5/lab5.html",
         codeLink: "/2.5/lab5_code.html"
-    },  
+    },
+    16: {
+        condition: `2.6`,
+        resultLink: "/2.6/lab6.html",
+        codeLink: "/2.6/lab6_code.html"
+    },
 };
 
 
