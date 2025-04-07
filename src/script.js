@@ -124,7 +124,7 @@ function toggleCondition() {
         codeLink: "/2.5/lab5_code.html"
     },
     16: {
-        condition: `2.6`,
+        condition: `2.6 | 7. Запуск MongoDB у контейнері.`,
         resultLink: "/2.6/lab6.html",
         codeLink: "/2.6/lab6_code.html"
     },
