@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №2.7</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .section {
+            margin: 40px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .code-block {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Лабораторна робота №2.7</h1>
+    
+    <div class="section">
+        <h2>SignUp.jsx Регистрация</h2>
+        <div class="code-block">
+<pre><code>import { createUserWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from "react";
+import { auth } from "../../firebase";
+
+const SignUp = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [copyPassword, setCopyPassword] = useState("");
+    const [error, setError] = useState("");
+
+    function register(e) {
+        e.preventDefault();
+        if (copyPassword !== password) {
+            setError("Пароли не совпадают");
+            return;
+        }
+
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((user) => {
+                console.log("Пользователь создан:", user);
+                setError("");
+                setEmail("");
+                setCopyPassword("");
+                setPassword("");
+            })
+            .catch((error) => {
+                console.error("Ошибка регистрации:", error);
+                setError(error.message);
+            });
+    }
+
+    return (
+        &lt;div className="auth-form"&gt;
+            &lt;h2&gt;Создание аккаунта&lt;/h2&gt;
+            {error &amp;&amp; &lt;p className="error-message"&gt;{error}&lt;/p&gt;}
+            &lt;form onSubmit={register}&gt;
+                &lt;input
+                    className="auth-input"
+                    placeholder="Введите свой Email"
+                    value={email}
+                    onChange={(e) =&gt; setEmail(e.target.value)}
+                    type="email"
+                    required
+                /&gt;
+                &lt;input
+                    className="auth-input"
+                    placeholder="Введите пароль (минимум 6 символов)"
+                    value={password}
+                    onChange={(e) =&gt; setPassword(e.target.value)}
+                    type="password"
+                    minLength="6"
+                    required
+                /&gt;
+                &lt;input
+                    className="auth-input"
+                    placeholder="Повторите пароль"
+                    value={copyPassword}
+                    onChange={(e) =&gt; setCopyPassword(e.target.value)}
+                    type="password"
+                    minLength="6"
+                    required
+                /&gt;
+                &lt;button className="auth-button" type="submit"&gt;Создать&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    );
+};
+
+export default SignUp;
+</code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>SignIn.jsx Вход</h2>
+        <div class="code-block">
+<pre><code>import { signInWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from "react";
+import { auth } from "../../firebase";
+
+const SignIn = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+
+    function logIn(e) {
+        e.preventDefault();
+
+        signInWithEmailAndPassword(auth, email, password)
+            .then((user) => {
+                console.log("Пользователь вошел:", user);
+                setError("");
+                setEmail("");
+                setPassword("");
+            })
+            .catch((error) => {
+                console.error("Ошибка входа:", error);
+                setError("Неверный email или пароль");
+            });
+    }
+
+    return (
+        &lt;div className="auth-form"&gt;
+            &lt;h2&gt;Вход в аккаунт&lt;/h2&gt;
+            {error &amp;&amp; &lt;p className="error-message"&gt;{error}&lt;/p&gt;}
+            &lt;form onSubmit={logIn}&gt;
+                &lt;input
+                    className="auth-input"
+                    placeholder="Введите свой Email"
+                    value={email}
+                    onChange={(e) =&gt; setEmail(e.target.value)}
+                    type="email"
+                    required
+                /&gt;
+                &lt;input
+                    className="auth-input"
+                    placeholder="Введите пароль"
+                    value={password}
+                    onChange={(e) =&gt; setPassword(e.target.value)}
+                    type="password"
+                    required
+                /&gt;
+                &lt;button className="auth-button" type="submit"&gt;Войти&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    );
+};
+
+export default SignIn;
+</code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>AuthDetails.jsx Прослушка и сигнал о входе и выходе</h2>
+        <div class="code-block">
+<pre><code>import { onAuthStateChanged, signOut } from "firebase/auth";
+import React, { useState, useEffect } from "react";
+import { auth } from "../../firebase";
+
+const AuthDetails = () => {
+    const [authUser, setAuthUser] = useState(null);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setAuthUser(user);
+            } else {
+                setAuthUser(null);
+            }
+        });
+        return () => unsubscribe();
+    }, []);
+
+    function userSignOut() {
+        signOut(auth)
+            .then(() => console.log("Выход выполнен успешно"))
+            .catch((error) => console.error("Ошибка выхода:", error));
+    }
+
+    return (
+        &lt;div className="user-info"&gt;
+            {authUser ? (
+                &lt;div&gt;
+                    &lt;p&gt;{`Вы вошли как: ${authUser.email}`}&lt;/p&gt;
+                    &lt;button 
+                        className="auth-button logout-button" 
+                        onClick={userSignOut}
+                    &gt;
+                        Выйти
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            ) : (
+                &lt;p&gt;Вы не авторизованы&lt;/p&gt;
+            )}
+        &lt;/div&gt;
+    );
+};
+
+export default AuthDetails;
+</code></pre>
+        </div>
+    </div>
+
+</body>
+</html>
