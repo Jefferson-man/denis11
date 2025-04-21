@@ -128,6 +128,11 @@ function toggleCondition() {
         resultLink: "/2.6/lab6.html",
         codeLink: "/2.6/lab6_code.html"
     },
+          17: {
+        condition: `2.7 | 7. irebase Authentication для автентифікації.`,
+        resultLink: "/2.7/lab7.html",
+        codeLink: "/2.7/lab7_code.html"
+    },
 };
 
 
